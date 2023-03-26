@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 
+import { COMMAND } from '../constants';
 import { ResourceItem } from './resource-item';
 
 export class ProjectItem extends ResourceItem {
@@ -9,7 +10,8 @@ export class ProjectItem extends ResourceItem {
 }
 
 export default class ProjectManager {
-  public readonly root: ProjectItem = new ResourceItem('Project', '$(project)', 'project', '', []);
+  public readonly root: ProjectItem = new ResourceItem(
+    'Project', '$(project)', 'project', COMMAND.listProjects, []);
   
   constructor(private readonly refresh: vscode.EventEmitter<void>) {}
 

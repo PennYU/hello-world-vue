@@ -1,40 +1,44 @@
-<script setup lang="ts">
-import { provideVSCodeDesignSystem, vsCodeButton } from "@vscode/webview-ui-toolkit";
-import { vscode } from "./utilities/vscode";
-
-// In order to use the Webview UI Toolkit web components they
-// must be registered with the browser (i.e. webview) using the
-// syntax below.
-provideVSCodeDesignSystem().register(vsCodeButton());
-
-// To register more toolkit components, simply import the component
-// registration function and call it from within the register
-// function, like so:
-//
-// provideVSCodeDesignSystem().register(
-//   vsCodeButton(),
-//   vsCodeCheckbox()
-// );
-//
-// Finally, if you would like to register all of the toolkit
-// components at once, there's a handy convenience function:
-//
-// provideVSCodeDesignSystem().register(allComponents.register());
-
-function handleHowdyClick() {
-  vscode.postMessage({
-    command: "hello",
-    text: "Hey there partner! 🤠",
-  });
-}
-</script>
-
 <template>
   <main>
     <h1>Hello world!</h1>
+    <router-view/>
     <vscode-button @click="handleHowdyClick">Howdy!</vscode-button>
   </main>
 </template>
+
+<script lang="ts">
+import {defineComponent} from 'vue';
+import { vscode } from "./utilities/vscode";
+
+export default defineComponent({
+  mounted () {
+    window.addEventListener('message', this.receiveMessage);
+  },
+  beforeDestroy() {
+    window.removeEventListener('message', this.receiveMessage);
+  },
+  methods: {
+    receiveMessage (event: any) {
+      console.log('receiveMessage', event.data);
+      if (event.data && event.data.id === 'linkTo') {
+        if (!event.data.path) {
+          console.log('path is empty.')
+          return;
+        }
+        if (this.$route.path === event.data.path) {
+          return;
+        }
+        
+        console.log('linkTo', event.data.path);
+        this.$router.push({path: event.data.path, query: this.$route.query});
+      }
+    },
+    handleHowdyClick() {
+      vscode.executeCommand("hello-world.newProject", "Hey there partner! 🤠");
+    }
+  }
+})
+</script>
 
 <style>
 main {

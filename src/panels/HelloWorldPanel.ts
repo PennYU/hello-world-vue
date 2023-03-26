@@ -1,6 +1,7 @@
-import { Disposable, Webview, WebviewPanel, window, Uri, ViewColumn } from "vscode";
+import * as vscode from "vscode";
 import { getUri } from "../utilities/getUri";
 import { getNonce } from "../utilities/getNonce";
+import { COMMAND } from "../constants";
 
 /**
  * This class manages the state and behavior of HelloWorld webview panels.
@@ -14,8 +15,8 @@ import { getNonce } from "../utilities/getNonce";
  */
 export class HelloWorldPanel {
   public static currentPanel: HelloWorldPanel | undefined;
-  private readonly _panel: WebviewPanel;
-  private _disposables: Disposable[] = [];
+  private readonly _panel: vscode.WebviewPanel;
+  private _disposables: vscode.Disposable[] = [];
 
   /**
    * The HelloWorldPanel class private constructor (called only from the render method).
@@ -23,7 +24,7 @@ export class HelloWorldPanel {
    * @param panel A reference to the webview panel
    * @param extensionUri The URI of the directory containing the extension
    */
-  private constructor(panel: WebviewPanel, extensionUri: Uri) {
+  private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
     this._panel = panel;
 
     // Set an event listener to listen for when the panel is disposed (i.e. when the user closes
@@ -43,31 +44,40 @@ export class HelloWorldPanel {
    *
    * @param extensionUri The URI of the directory containing the extension.
    */
-  public static render(extensionUri: Uri) {
+  public static render(extensionUri: vscode.Uri, path: string) {
     if (HelloWorldPanel.currentPanel) {
       // If the webview panel already exists reveal it
-      HelloWorldPanel.currentPanel._panel.reveal(ViewColumn.One);
+      HelloWorldPanel.currentPanel._panel.reveal(vscode.ViewColumn.One);
     } else {
       // If a webview panel does not already exist create and show a new one
-      const panel = window.createWebviewPanel(
+      const panel = vscode.window.createWebviewPanel(
         // Panel view type
         "showHelloWorld",
         // Panel title
         "Hello World",
         // The editor column the panel should be displayed in
-        ViewColumn.One,
+        vscode.ViewColumn.One,
         // Extra panel configurations
         {
           // Enable JavaScript in the webview
           enableScripts: true,
           // Restrict the webview to only load resources from the `out` and `webview-ui/build` directories
-          localResourceRoots: [Uri.joinPath(extensionUri, "out"), Uri.joinPath(extensionUri, "webview-ui/build")],
+          localResourceRoots: [vscode.Uri.joinPath(extensionUri, "out"), vscode.Uri.joinPath(extensionUri, "webview-ui/build")],
         }
       );
 
       HelloWorldPanel.currentPanel = new HelloWorldPanel(panel, extensionUri);
     }
+    vscode.commands.executeCommand(COMMAND.webViewLinkTo, path); 
   }
+
+  public static postMessage(message: any) {
+    if (HelloWorldPanel.currentPanel) {
+      HelloWorldPanel.currentPanel._panel.webview.postMessage(message);
+    } else {
+      // TODO
+    }
+  } 
 
   /**
    * Cleans up and disposes of webview resources when the webview panel is closed.
@@ -98,7 +108,7 @@ export class HelloWorldPanel {
    * @returns A template string literal containing the HTML that should be
    * rendered within the webview panel
    */
-  private _getWebviewContent(webview: Webview, extensionUri: Uri) {
+  private _getWebviewContent(webview: vscode.Webview, extensionUri: vscode.Uri) {
     // The CSS file from the Vue build output
     const stylesUri = getUri(webview, extensionUri, ["webview-ui", "build", "assets", "index.css"]);
     // The JS file from the Vue build output
@@ -132,20 +142,12 @@ export class HelloWorldPanel {
    * @param webview A reference to the extension webview
    * @param context A reference to the extension context
    */
-  private _setWebviewMessageListener(webview: Webview) {
+  private _setWebviewMessageListener(webview: vscode.Webview) {
     webview.onDidReceiveMessage(
       (message: any) => {
         const command = message.command;
-        const text = message.text;
-
-        switch (command) {
-          case "hello":
-            // Code that should run in response to the hello message command
-            window.showInformationMessage(text);
-            return;
-          // Add more switch case statements here as more webview message commands
-          // are created within the webview context (i.e. inside media/main.js)
-        }
+        const args = message.args || [];
+        vscode.commands.executeCommand(command, ...args); 
       },
       undefined,
       this._disposables

@@ -37,6 +37,16 @@ class VSCodeAPIWrapper {
   }
 
   /**
+   * execute command
+   * 
+   * @param command command
+   * @param args args
+   */
+  public executeCommand(command: string, ...args: any[]) {
+    vscode.postMessage({ command: command, ...args });
+  }
+
+  /**
    * Get the persistent state stored for this webview.
    *
    * @remarks When running webview source code inside a web browser, getState will retrieve state

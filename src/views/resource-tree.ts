@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 
+import { COMMAND } from '../constants';
 import { ResourceItem } from './resource-item';
 
 export default class ResourceTreeProvider implements vscode.TreeDataProvider<ResourceItem> {
@@ -8,7 +9,7 @@ export default class ResourceTreeProvider implements vscode.TreeDataProvider<Res
   private readonly roots: ResourceItem[] = [];
 
   constructor() {
-    this.roots.push(new ResourceItem('Home', '$(home)', 'home', '', []));
+    this.roots.push(new ResourceItem('Home', '$(home)', 'home', COMMAND.showHelloWorld, []));
   }
 
   public get onDidChangeTreeData(): vscode.Event<void> {

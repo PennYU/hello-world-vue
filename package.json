@@ -21,9 +21,19 @@
         "title": "Hello World (Vue): Show"
       },
       {
+        "command": "hello-world.listProjects",
+        "title": "Hello World (Vue): List Projects",
+        "icon": "$(plus)"
+      },
+      {
         "command": "hello-world.newProject",
         "title": "Hello World (Vue): Open Project",
         "icon": "$(plus)"
+      },
+      {
+        "command": "hello-world.buildProject",
+        "title": "Hello World (Vue): Build Project",
+        "icon": "$(debug-start)"
       }
     ],
     "menus": {
@@ -31,6 +41,11 @@
         {
           "command": "hello-world.newProject",
           "when": "view == hello-world.showHome && viewItem == project",
+          "group": "inline"
+        },
+        {
+          "command": "hello-world.buildProject",
+          "when": "view == hello-world.showHome && viewItem == projectItem",
           "group": "inline"
         }
       ]

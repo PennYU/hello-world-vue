@@ -4,13 +4,30 @@ import DeviceManager from "./views/device-view";
 import ProjectManager, { ProjectItem } from "./views/project-view";
 import ResourceTreeProvider from "./views/resource-tree";
 import TerminalManager from "./views/terminal-view";
+import { COMMAND } from "./constants";
 
 export function activate(context: vscode.ExtensionContext) {
-  const showHelloWorldCommand = vscode.commands.registerCommand("hello-world.showHelloWorld", () => {
-    HelloWorldPanel.render(context.extensionUri);
+  const showHelloWorldCommand = vscode.commands.registerCommand(COMMAND.showHelloWorld, () => {
+    HelloWorldPanel.render(context.extensionUri, '/home');
+  });
+  const listProjectsCommand = vscode.commands.registerCommand(COMMAND.listProjects, () => {
+    HelloWorldPanel.render(context.extensionUri, '/projects');
   });
 
-  context.subscriptions.push(showHelloWorldCommand);
+  const replayMessageCommand = vscode.commands.registerCommand(COMMAND.postMessageToWebView, (msg: any) => {
+    HelloWorldPanel.postMessage(msg);
+  });
+
+  const linkToMessageCommand = vscode.commands.registerCommand(COMMAND.webViewLinkTo, (path: string) => {
+    HelloWorldPanel.postMessage({ id: 'linkTo', success: true, message: '', path });
+  });
+
+  context.subscriptions.push(
+    showHelloWorldCommand,
+    listProjectsCommand,
+    replayMessageCommand,
+    linkToMessageCommand,
+  );
 
   const resourceTreeProvider = new ResourceTreeProvider();
   const projectManager = new ProjectManager(resourceTreeProvider.changeEvent);
@@ -26,8 +43,16 @@ export function activate(context: vscode.ExtensionContext) {
     )
   );
 
-  const newProjectCommand = vscode.commands.registerCommand("hello-world.newProject", () => {
+  const newProjectCommand = vscode.commands.registerCommand(COMMAND.newProject, () => {
     projectManager.addProject(new ProjectItem('project 001', '', []));
   });
-  context.subscriptions.push(newProjectCommand);
+  const buildProjectCommand = vscode.commands.registerCommand(COMMAND.buildProject, (project: ProjectItem) => {
+    console.log(project);
+  });
+  [
+    newProjectCommand,
+    buildProjectCommand,
+  ].forEach(disposable => {
+    context.subscriptions.push(disposable);
+  });
 }
