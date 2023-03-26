@@ -1,7 +1,9 @@
 import * as vscode from "vscode";
 import { HelloWorldPanel } from "./panels/HelloWorldPanel";
+import DeviceManager from "./views/device-view";
 import ProjectManager, { ProjectItem } from "./views/project-view";
 import ResourceTreeProvider from "./views/resource-tree";
+import TerminalManager from "./views/terminal-view";
 
 export function activate(context: vscode.ExtensionContext) {
   const showHelloWorldCommand = vscode.commands.registerCommand("hello-world.showHelloWorld", () => {
@@ -12,7 +14,11 @@ export function activate(context: vscode.ExtensionContext) {
 
   const resourceTreeProvider = new ResourceTreeProvider();
   const projectManager = new ProjectManager(resourceTreeProvider.changeEvent);
+  const deviceManager = new DeviceManager(resourceTreeProvider.changeEvent);
+  const terminalManager = new TerminalManager(resourceTreeProvider.changeEvent);
   resourceTreeProvider.addTreeItem(projectManager.root);
+  resourceTreeProvider.addTreeItem(deviceManager.root);
+  resourceTreeProvider.addTreeItem(terminalManager.root);
   context.subscriptions.push(
     vscode.window.registerTreeDataProvider(
       'hello-world.showHome',

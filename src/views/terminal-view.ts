@@ -3,20 +3,18 @@ import * as vscode from 'vscode';
 import { ResourceItem } from './resource-item';
 
 export class TerminalItem extends ResourceItem {
-
+  constructor(label: string, command: string, args: any[]) {
+    super(label, '$(console)', 'terminalItem', command, args);
+  }
 }
 
-export default class ProjectView implements vscode.TreeDataProvider<TerminalItem> {
-  getTreeItem(element: TerminalItem): TerminalItem {
-    return element;
-  }
+export default class TerminalManager {
+  public readonly root: TerminalItem = new ResourceItem('Terminal', '$(console)', 'terminal', '', []);
+  
+  constructor(private readonly refresh: vscode.EventEmitter<void>) {}
 
-  getChildren(element: TerminalItem): TerminalItem[] {
-    if (element && element.children) {
-      return element.children;
-    }
-    return [
-      new TerminalItem('terminal 001', 'terminal', 'cmd001', []),
-    ];
+  addProject(project: TerminalItem) {
+    this.root.children.unshift(project);
+    this.refresh.fire();
   }
 }

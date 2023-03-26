@@ -8,7 +8,7 @@ export default class ResourceTreeProvider implements vscode.TreeDataProvider<Res
   private readonly roots: ResourceItem[] = [];
 
   constructor() {
-    this.roots.push(new ResourceItem('Home', 'home', '', []));
+    this.roots.push(new ResourceItem('Home', '$(home)', 'home', '', []));
   }
 
   public get onDidChangeTreeData(): vscode.Event<void> {
