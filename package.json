@@ -31,6 +31,11 @@
         "icon": "$(plus)"
       },
       {
+        "command": "hello-world.openCmakeProject",
+        "title": "Hello World (Vue): Open Project",
+        "icon": "$(plus)"
+      },
+      {
         "command": "hello-world.buildProject",
         "title": "Hello World (Vue): Build Project",
         "icon": "$(debug-start)"
@@ -39,7 +44,7 @@
     "menus": {
       "view/item/context": [
         {
-          "command": "hello-world.newProject",
+          "command": "hello-world.openCmakeProject",
           "when": "view == hello-world.showHome && viewItem == project",
           "group": "inline"
         },

@@ -10,8 +10,17 @@ export function activate(context: vscode.ExtensionContext) {
   const showHelloWorldCommand = vscode.commands.registerCommand(COMMAND.showHelloWorld, () => {
     HelloWorldPanel.render(context.extensionUri, '/home');
   });
+  const listDevicesCommand = vscode.commands.registerCommand(COMMAND.listDevices, () => {
+    HelloWorldPanel.render(context.extensionUri, '/devices');
+  });
   const listProjectsCommand = vscode.commands.registerCommand(COMMAND.listProjects, () => {
     HelloWorldPanel.render(context.extensionUri, '/projects');
+  });
+  const listTerminalsCommand = vscode.commands.registerCommand(COMMAND.listTerminals, () => {
+    HelloWorldPanel.render(context.extensionUri, '/terminals');
+  });
+  const openCmakeProjectCommand = vscode.commands.registerCommand(COMMAND.openCmakeProject, () => {
+    HelloWorldPanel.render(context.extensionUri, '/projects/cmake/open');
   });
 
   const replayMessageCommand = vscode.commands.registerCommand(COMMAND.postMessageToWebView, (msg: any) => {
@@ -24,7 +33,10 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     showHelloWorldCommand,
+    listDevicesCommand,
     listProjectsCommand,
+    openCmakeProjectCommand,
+    listTerminalsCommand,
     replayMessageCommand,
     linkToMessageCommand,
   );

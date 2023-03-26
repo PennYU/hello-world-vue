@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { COMMAND } from '../constants';
 
 import { ResourceItem } from './resource-item';
 
@@ -9,7 +10,8 @@ export class DeviceItem extends ResourceItem {
 }
 
 export default class DeviceManager {
-  public readonly root: DeviceItem = new ResourceItem('Device', '$(device-mobile)', 'device', '', []);
+  public readonly root: DeviceItem = new ResourceItem(
+    'Device', '$(device-mobile)', 'device', COMMAND.listDevices, []);
   
   constructor(private readonly refresh: vscode.EventEmitter<void>) {}
 

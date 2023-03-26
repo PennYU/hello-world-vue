@@ -5,7 +5,11 @@ import {
 } from "@vscode/webview-ui-toolkit";
 import App from "./App.vue";
 import Home from "./views/Home.vue";
+import Devices from "./views/device/index.vue";
 import Projects from "./views/project/index.vue";
+import Terminals from "./views/terminal/index.vue";
+
+import OpenCmakeProject from "./views/project/cmake/Open.vue";
 
 provideVSCodeDesignSystem().register(
   vsCodeButton()
@@ -14,7 +18,10 @@ provideVSCodeDesignSystem().register(
 const routes = [
   { path: '/', component: Home },
   { path: '/home', component: Home },
+  { path: '/devices', component: Devices },
   { path: '/projects', component: Projects },
+  { path: '/projects/cmake/open', component: OpenCmakeProject },
+  { path: '/terminals', component: Terminals },
 ]
 const router = VueRouter.createRouter({
   history: VueRouter.createWebHashHistory(),

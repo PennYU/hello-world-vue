@@ -9,6 +9,7 @@
 <script lang="ts">
 import {defineComponent} from 'vue';
 import { vscode } from "./utilities/vscode";
+import { COMMAND } from "../../src/constants";
 
 export default defineComponent({
   mounted () {
@@ -34,7 +35,7 @@ export default defineComponent({
       }
     },
     handleHowdyClick() {
-      vscode.executeCommand("hello-world.newProject", "Hey there partner! 🤠");
+      vscode.executeCommand(COMMAND.newProject, "Hey there partner! 🤠");
     }
   }
 })

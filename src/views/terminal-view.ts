@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { COMMAND } from '../constants';
 
 import { ResourceItem } from './resource-item';
 
@@ -9,7 +10,8 @@ export class TerminalItem extends ResourceItem {
 }
 
 export default class TerminalManager {
-  public readonly root: TerminalItem = new ResourceItem('Terminal', '$(console)', 'terminal', '', []);
+  public readonly root: TerminalItem = new ResourceItem(
+    'Terminal', '$(console)', 'terminal', COMMAND.listTerminals, []);
   
   constructor(private readonly refresh: vscode.EventEmitter<void>) {}
 
