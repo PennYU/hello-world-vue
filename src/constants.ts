@@ -11,3 +11,8 @@ export const COMMAND = {
   postMessageToWebView: 'hello-world.postMessageToWebView',
   webViewLinkTo: 'hello-world.webViewLinkTo',
 };
+
+
+export const STORAGE_KEY = {
+  terminalId: 'hello-world.terminals',
+};

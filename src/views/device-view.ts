@@ -13,7 +13,9 @@ export default class DeviceManager {
   public readonly root: DeviceItem = new ResourceItem(
     'Device', '$(device-mobile)', 'device', COMMAND.listDevices, []);
   
-  constructor(private readonly refresh: vscode.EventEmitter<void>) {}
+  constructor(private readonly context: vscode.ExtensionContext,
+    private readonly refresh: vscode.EventEmitter<void>
+  ) {}
 
   addProject(project: DeviceItem) {
     this.root.children.unshift(project);

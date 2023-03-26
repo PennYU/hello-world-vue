@@ -18,6 +18,11 @@ export function activate(context: vscode.ExtensionContext) {
   });
   const listTerminalsCommand = vscode.commands.registerCommand(COMMAND.listTerminals, () => {
     HelloWorldPanel.render(context.extensionUri, '/terminals');
+    HelloWorldPanel.postMessage({
+      id: COMMAND.listTerminals,
+      success: true,
+      terminals: terminalManager.listTerminals(),
+    });
   });
   const openCmakeProjectCommand = vscode.commands.registerCommand(COMMAND.openCmakeProject, () => {
     HelloWorldPanel.render(context.extensionUri, '/projects/cmake/open');
@@ -42,9 +47,9 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   const resourceTreeProvider = new ResourceTreeProvider();
-  const projectManager = new ProjectManager(resourceTreeProvider.changeEvent);
-  const deviceManager = new DeviceManager(resourceTreeProvider.changeEvent);
-  const terminalManager = new TerminalManager(resourceTreeProvider.changeEvent);
+  const projectManager = new ProjectManager(context, resourceTreeProvider.changeEvent);
+  const deviceManager = new DeviceManager(context, resourceTreeProvider.changeEvent);
+  const terminalManager = new TerminalManager(context, resourceTreeProvider.changeEvent);
   resourceTreeProvider.addTreeItem(projectManager.root);
   resourceTreeProvider.addTreeItem(deviceManager.root);
   resourceTreeProvider.addTreeItem(terminalManager.root);

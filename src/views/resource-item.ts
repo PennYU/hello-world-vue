@@ -1,7 +1,9 @@
 import * as vscode from 'vscode';
+import {v4 as uuidv4} from 'uuid';
 
 export class ResourceItem extends vscode.TreeItem {
-  public readonly children: ResourceItem[] = [];
+  public readonly id: string = uuidv4();
+  public children: ResourceItem[] = [];
   constructor(label: string, iconPath: string, contextValue: string, command: string, args: any[]) {
     super(label);
     if (iconPath.startsWith('$(') && iconPath.endsWith(')')) {

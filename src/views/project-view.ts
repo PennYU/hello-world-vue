@@ -13,7 +13,10 @@ export default class ProjectManager {
   public readonly root: ProjectItem = new ResourceItem(
     'Project', '$(project)', 'project', COMMAND.listProjects, []);
   
-  constructor(private readonly refresh: vscode.EventEmitter<void>) {}
+  constructor(
+    private readonly context: vscode.ExtensionContext,
+    private readonly refresh: vscode.EventEmitter<void>
+  ) {}
 
   addProject(project: ProjectItem) {
     this.root.children.unshift(project);
