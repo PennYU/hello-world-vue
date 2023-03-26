@@ -36,6 +36,11 @@
         "icon": "$(plus)"
       },
       {
+        "command": "hello-world.newMmlTerminal",
+        "title": "Hello World (Vue): New Terminal",
+        "icon": "$(plus)"
+      },
+      {
         "command": "hello-world.buildProject",
         "title": "Hello World (Vue): Build Project",
         "icon": "$(debug-start)"
@@ -46,6 +51,11 @@
         {
           "command": "hello-world.openCmakeProject",
           "when": "view == hello-world.showHome && viewItem == project",
+          "group": "inline"
+        },
+        {
+          "command": "hello-world.newMmlTerminal",
+          "when": "view == hello-world.showHome && viewItem == terminal",
           "group": "inline"
         },
         {

@@ -10,6 +10,7 @@ import Projects from "./views/project/index.vue";
 import Terminals from "./views/terminal/index.vue";
 
 import OpenCmakeProject from "./views/project/cmake/Open.vue";
+import NewMmlTerminal from "./views/terminal/mml/New.vue";
 
 provideVSCodeDesignSystem().register(
   vsCodeButton()
@@ -22,6 +23,7 @@ const routes = [
   { path: '/projects', component: Projects },
   { path: '/projects/cmake/open', component: OpenCmakeProject },
   { path: '/terminals', component: Terminals },
+  { path: '/terminals/mml/new', component: NewMmlTerminal },
 ]
 const router = VueRouter.createRouter({
   history: VueRouter.createWebHashHistory(),

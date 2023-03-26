@@ -4,7 +4,7 @@ import DeviceManager from "./views/device-view";
 import ProjectManager, { ProjectItem } from "./views/project-view";
 import ResourceTreeProvider from "./views/resource-tree";
 import TerminalManager from "./views/terminal-view";
-import { COMMAND } from "./constants";
+import { COMMAND, ROUTE_LINK } from "./constants";
 
 export function activate(context: vscode.ExtensionContext) {
   const showHelloWorldCommand = vscode.commands.registerCommand(COMMAND.showHelloWorld, () => {
@@ -27,6 +27,9 @@ export function activate(context: vscode.ExtensionContext) {
   const openCmakeProjectCommand = vscode.commands.registerCommand(COMMAND.openCmakeProject, () => {
     HelloWorldPanel.render(context.extensionUri, '/projects/cmake/open');
   });
+  const newMmlTerminalProjectCommand = vscode.commands.registerCommand(COMMAND.newMmlTerminal, () => {
+    HelloWorldPanel.render(context.extensionUri, ROUTE_LINK.newMmlTerminal);
+  });
 
   const replayMessageCommand = vscode.commands.registerCommand(COMMAND.postMessageToWebView, (msg: any) => {
     HelloWorldPanel.postMessage(msg);
@@ -44,6 +47,7 @@ export function activate(context: vscode.ExtensionContext) {
     listTerminalsCommand,
     replayMessageCommand,
     linkToMessageCommand,
+    newMmlTerminalProjectCommand,
   );
 
   const resourceTreeProvider = new ResourceTreeProvider();
