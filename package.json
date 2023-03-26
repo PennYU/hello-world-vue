@@ -10,7 +10,8 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:hello-world.showHelloWorld"
+    "onCommand:hello-world.showHelloWorld",
+    "onView:hello-world.showHome"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -18,8 +19,40 @@
       {
         "command": "hello-world.showHelloWorld",
         "title": "Hello World (Vue): Show"
+      },
+      {
+        "command": "hello-world.newProject",
+        "title": "Hello World (Vue): Open Project",
+        "icon": "$(plus)"
       }
-    ]
+    ],
+    "menus": {
+      "view/item/context": [
+        {
+          "command": "hello-world.newProject",
+          "when": "view == hello-world.showHome && viewItem == project",
+          "group": "inline"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "hello-world-resource-tree",
+          "title": "Resource",
+          "icon": "$(default-view-icon)"
+        }
+      ]
+    },
+    "views": {
+      "hello-world-resource-tree": [
+        {
+          "id": "hello-world.showHome",
+          "name": "Show Home",
+          "type": "tree"
+        }
+      ]
+    }
   },
   "scripts": {
     "install:all": "npm install && cd webview-ui && npm install",

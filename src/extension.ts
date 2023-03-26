@@ -1,12 +1,27 @@
-import { commands, ExtensionContext } from "vscode";
+import * as vscode from "vscode";
 import { HelloWorldPanel } from "./panels/HelloWorldPanel";
+import ProjectManager, { ProjectItem } from "./views/project-view";
+import ResourceTreeProvider from "./views/resource-tree";
 
-export function activate(context: ExtensionContext) {
-  // Create the show hello world command
-  const showHelloWorldCommand = commands.registerCommand("hello-world.showHelloWorld", () => {
+export function activate(context: vscode.ExtensionContext) {
+  const showHelloWorldCommand = vscode.commands.registerCommand("hello-world.showHelloWorld", () => {
     HelloWorldPanel.render(context.extensionUri);
   });
 
-  // Add command to the extension context
   context.subscriptions.push(showHelloWorldCommand);
+
+  const resourceTreeProvider = new ResourceTreeProvider();
+  const projectManager = new ProjectManager(resourceTreeProvider.changeEvent);
+  resourceTreeProvider.addTreeItem(projectManager.root);
+  context.subscriptions.push(
+    vscode.window.registerTreeDataProvider(
+      'hello-world.showHome',
+      resourceTreeProvider
+    )
+  );
+
+  const newProjectCommand = vscode.commands.registerCommand("hello-world.newProject", () => {
+    projectManager.addProject(new ProjectItem('project 001', '', []));
+  });
+  context.subscriptions.push(newProjectCommand);
 }
